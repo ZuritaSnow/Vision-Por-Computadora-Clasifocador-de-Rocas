@@ -354,7 +354,7 @@ const loadModel = async () => {
   modelError.value = ''
   try {
     await tf.ready()  // ← espera que el backend (WebGL/WASM) esté listo
-    model = await tf.loadLayersModel(MODEL_URL)
+    model = await tf.loadGraphModel(MODEL_URL)
 
     // Warm-up seguro
     tf.tidy(() => {
@@ -452,7 +452,7 @@ const runInference = async () => {
 
   let predsData
   try {
-    const predsTensor = model.predict(tensor)
+    const predsTensor = model.execute(tensor)
     predsData = await predsTensor.data()
     predsTensor.dispose()
   } catch (err) {
